@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# pytest / отчёты
+.pytest_cache/
+allure-results/
+allure-report/
+screenshots/
+videos/
+logs/
+debug.png
+
+# Секреты
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store

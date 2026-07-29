@@ -1,0 +1,41 @@
+[project]
+name = "qa-automation"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Andrey",email = "andreyhor02@gmail.com"}
+]
+requires-python = "^3.12"
+dependencies = [
+    "requests (>=2.34.2,<3.0.0)",
+    "playwright (>=1.61.0,<2.0.0)",
+    "dotenv (>=0.9.9,<0.10.0)",
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.1.1,<10.0.0)"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["ui_tests"]
+pythonpath = ["."]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "-v",
+]
+markers = [
+    "ui: UI-тесты через браузер",
+    "smoke: быстрые sanity-тесты",
+    "regression: полный регресс",
+]
+
+[tool.poetry]
+package-mode = false
