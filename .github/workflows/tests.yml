@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: start gitea
+        run: docker compose up -d
+
+      - name: Install requerements
+        run: | 
+           pip install --upgrade pip
+           pipx install poetry
+           poetry config virtualenvs.in-project true
+           poetry install
+           poetry run playwright install --with-deps chromium
+
+      - name: Create test user
+        run: | 
+            docker exec -u git gitea gitea admin user create \
+            --username "${{ secrets.GITEA_USER }}" \
+            --password "${{ secrets.GITEA_PASSWORD }}" \
+            --email qa@example.local --admin --must-change-password=false
+
+      - name: Run tests
+        env:
+          GITEA_URL: http://localhost:3000
+          GITEA_USER: ${{ secrets.GITEA_USER }}
+          GITEA_PASSWORD: ${{ secrets.GITEA_PASSWORD }}
+        run: poetry run pytest -sv
+
+      
+           
+
+
+
+
+
+            
