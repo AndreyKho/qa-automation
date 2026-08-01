@@ -21,3 +21,10 @@ def test_invalid_login(page):
     loginpage.open(f"{settings.gitea_url}/user/login")
     loginpage.login(settings.gitea_user, "testpassword")
     assert loginpage.get_error_message() == INVALID_LOGIN_MSG
+
+@pytest.mark.ui
+@pytest.mark.regression
+def test_login_out(authenticated_page):
+    homepage = HomePage(authenticated_page)
+    homepage.logout()
+    assert not homepage.is_loaded()
