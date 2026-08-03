@@ -23,7 +23,7 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["ui_tests"]
+testpaths = ["ui_tests", "api_tests"]
 pythonpath = ["."]
 addopts = [
     "-ra",
@@ -33,6 +33,7 @@ addopts = [
 ]
 markers = [
     "ui: UI-тесты через браузер",
+    "api: API-тесты REST",
     "smoke: быстрые sanity-тесты",
     "regression: полный регресс",
 ]
