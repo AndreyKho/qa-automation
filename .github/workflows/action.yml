@@ -1,0 +1,30 @@
+name: Setup
+description: Поднимает стенд Gitea, ставит зависимости и создаёт тестового пользователя
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v6
+      with:
+        python-version: '3.12'
+    
+    - name: Start gitea
+      shell: bash
+      run: docker compose up -d --wait
+    
+    - name: Install requirements
+      shell: bash
+      run: | 
+         pip install --upgrade pip
+         pipx install poetry
+         poetry config virtualenvs.in-project true
+         poetry install
+         poetry run playwright install --with-deps chromium
+    
+    - name: Create test user
+      shell: bash
+      run: | 
+          docker exec -u git gitea gitea admin user create \
+          --username "$GITEA_USER" \
+          --password "$GITEA_PASSWORD" \
+          --email qa@example.local --admin --must-change-password=false
