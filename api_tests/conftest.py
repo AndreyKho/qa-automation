@@ -10,9 +10,10 @@ def gitea_client():
 
 @pytest.fixture(scope="function")
 def repo(gitea_client):
-    created_repo = gitea_client.create_repo(unique_repo_name())
+    name = unique_repo_name()
+    created_repo = gitea_client.create_repo(name)
     yield created_repo
     try:
-        gitea_client.delete_repo(settings.gitea_user, unique_repo_name())
+        gitea_client.delete_repo(settings.gitea_user, name)
     except:
         pass
