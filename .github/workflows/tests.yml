@@ -18,7 +18,14 @@ jobs:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
       - name: Run smoke tests  
-        run: poetry run pytest -m smoke -sv
+        run: poetry run pytest -m smoke -sv --alluredir=allure-results
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: allure-results-smoke
+          path: allure-results
 
   regression:
     needs: smoke
@@ -31,4 +38,11 @@ jobs:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
       - name: Run regression tests  
-        run: poetry run pytest -m regression -sv 
+        run: poetry run pytest -m regression -sv --alluredir=allure-results
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: allure-results-regression
+          path: allure-results
